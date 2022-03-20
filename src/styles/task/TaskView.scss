@@ -1,0 +1,98 @@
+.task-view {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  min-height: 0;
+
+  .header {
+    padding: 35px;
+    padding-top: 30px;
+    position: sticky;
+
+    @include theme() {
+      box-shadow: 0px 4px 10px getColor(dropShadow);
+    }
+    
+    .title {
+      font-size: 25px;
+    }
+
+    .breadcrumbs {
+      font-size: 14px;
+      
+      @include theme() {
+        color: getColor(textLevel5);
+      }
+
+      .icon {
+        font-size: 9px;
+        margin: 0 5px;
+      }
+    }
+  }
+
+  .body {
+    overflow-y: auto;
+    flex-grow: 1;
+
+    .label {
+      font-size: 13px;
+      font-weight: 500;
+      
+      margin-bottom: 10px;
+  
+      @include theme() {
+        color: getColor(textLevel4);
+      }
+  
+      .icon {
+        margin-right: 10px;
+      }
+    }
+  
+    .text {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+  
+      @include theme() {
+        color: getColor(textLevel2);
+      }
+  
+      .tag {
+        font-size: 13px;
+      }
+    }
+  
+    .info {
+      margin: 30px;
+  
+      display: flex;
+      flex-wrap: wrap;
+  
+      .item {
+        margin-bottom: 15px;
+        min-width: 200px;
+        flex: 0 0 auto;
+  
+        .text {
+          height: 30px;
+        }
+  
+        &:not(:last-child) {
+          margin-right: 15px;
+        }
+      }
+    }
+  
+    .description {
+      margin: 30px;
+    }
+  
+    .comments {
+      margin: 30px;
+      margin-top: 45px;
+    }
+  }
+}

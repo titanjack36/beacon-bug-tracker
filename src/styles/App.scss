@@ -1,0 +1,23 @@
+@import "./colors";
+
+#app {
+  display: flex;
+  height: 100%;
+}
+
+.right-content {
+  height: 100%;
+  flex-grow: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+
+  @include theme() {
+    .btn-secondary {
+      background: getColor(secondary);
+      color: getColor(textLevel3);
+
+      border: none;
+    }
+  }
+}

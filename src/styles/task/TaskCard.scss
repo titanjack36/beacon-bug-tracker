@@ -1,0 +1,82 @@
+.task-card {
+  @include theme() {
+    background: getColor(primaryBg);
+    box-shadow: 0px 0px 10px getColor(dropShadow);
+  }
+
+  transition: all 0.25s;
+
+  padding-top: 15px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  overflow: hidden;
+
+  .top {
+    display: flex;
+
+    .title-section {
+      margin-right: 15px;
+      margin-top: -3px;
+      // parent must have overflow hidden for ellipsis to work
+      overflow: hidden;
+  
+      .title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 14px;
+  
+        margin-bottom: 2px;
+      }
+    }
+  
+    .profile-view {
+      margin: 0 20px 0 15px;
+    }
+  }
+
+  .attr {
+    div {
+      display: inline-block;
+    }
+
+    &-title {
+      width: 60px;
+      margin-right: 5px;
+      text-align: center;
+    }
+
+    &-value {
+      font-size: 13px;
+      font-weight: 500;
+    }
+  }
+
+  .subtitle {
+    @include theme() {
+      color: getColor(textLevel4)
+    }
+    font-size: 13px;
+  }
+
+  .priority-bar {
+    height: 10px;
+    width: 100%;
+    margin-top: 15px;
+    display: flex;
+
+    .priority {
+      flex-grow: 1;
+    }
+
+    @include theme() {
+      background: getColor(secondary);
+
+      @for $i from 1 through 5 {
+        &.show-priority-#{$i} .priority-#{$i} {
+          background: getColor(priority#{$i});
+        }
+      }
+    }
+  }
+}

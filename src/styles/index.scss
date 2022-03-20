@@ -1,0 +1,66 @@
+@import "toastify-js/src/toastify.css";
+
+@import './colors';
+@import './shared';
+
+body {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+  background: #F1F1F1;
+  color: inherit;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.btn {
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+}
+
+.error-toast {
+  display: flex;
+  align-items: center;
+
+  border-radius: 6px;
+
+  color: #000000;
+  background: #ffffff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.08);
+
+  .toastify-avatar {
+    width: 20px;
+    margin-right: 10px;
+    margin-left: 0;
+  }
+
+  .toast-close {
+    margin-left: 10px;
+  }
+}

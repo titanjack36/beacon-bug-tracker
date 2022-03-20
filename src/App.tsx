@@ -1,25 +1,38 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Provider } from 'react-redux';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate
+} from "react-router-dom";
+import './styles/App.scss';
+import AuthGuard from './components/AuthGuard';
+import Home from './components/home/Home';
+import { store } from './store';
+import LeftMenu from './components/menu/LeftMenu';
+import TopMenu from './components/menu/TopMenu';
+import ProjectWrapper from './components/project/ProjectWrapper';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <BrowserRouter>
+        <AuthGuard>
+          <div id="app" className="theme-light">
+            <LeftMenu />
+            <div className="right-content">
+              <TopMenu />
+              <Routes>
+                <Route path="projects/:projectId/*" element={<ProjectWrapper />} />
+                <Route path="home" element={<Home />} />
+                <Route path="*" element={<Navigate to="home" />} />
+              </Routes>
+            </div>
+          </div>
+        </AuthGuard>
+      </BrowserRouter>
+    </Provider>
   );
 }
 

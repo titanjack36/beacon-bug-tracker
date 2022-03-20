@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="60.791367mm"
+   height="18.442314mm"
+   viewBox="0 0 60.791366 18.442314"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="beacon-logo.svg"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   inkscape:export-filename="C:\Users\jackg\Drive\Code\Web\bug-tracker\src\assets\beacon-logo.png"
+   inkscape:export-xdpi="247.52229"
+   inkscape:export-ydpi="247.52229"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#181f47"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="3.0574074"
+     inkscape:cx="86.511206"
+     inkscape:cy="53.803755"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-paths="true"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-bbox-edge-midpoints="true"
+     inkscape:snap-bbox-midpoints="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid29112"
+       originx="-0.77884359"
+       originy="-0.77884543" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-48.539081,-93.576351)">
+    <circle
+       style="fill:#008fff;fill-opacity:1;stroke:#008fff;stroke-width:0.130429;stroke-linejoin:round;stroke-opacity:1"
+       id="path1362"
+       cx="57.712521"
+       cy="102.86906"
+       r="2.111721" />
+    <circle
+       style="fill:none;fill-opacity:1;stroke:#7cc5ff;stroke-width:2.00315;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path2564"
+       cx="57.760704"
+       cy="102.84571"
+       r="4.9643669" />
+    <circle
+       style="fill:none;fill-opacity:1;stroke:#c1e4ff;stroke-width:1.69925;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path2564-7"
+       cx="57.760239"
+       cy="102.79751"
+       r="8.3715324" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:11.2889px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="76.417351"
+       y="106.09187"
+       id="text1772"><tspan
+         sodipodi:role="line"
+         id="tspan1770"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.2889px;font-family:Calibri;-inkscape-font-specification:Calibri;fill:#ffffff;stroke-width:0.264583"
+         x="76.417351"
+         y="106.09187">Beacon</tspan></text>
+  </g>
+</svg>

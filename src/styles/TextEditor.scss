@@ -1,0 +1,42 @@
+.text-editor {
+  display: flex;
+  flex-direction: column;
+
+  img, svg {
+    vertical-align: initial;
+  }
+
+  .toolbar {
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+  }
+
+  .quill {
+    flex-grow: 1;
+    min-height: 0;
+  }
+
+  .ql-container {
+    border-radius: 0 0 6px 6px;
+    font-family: inherit;
+    font-size: 14px;
+  }
+
+  .ql-editor {
+    overflow: auto;
+  }
+
+  &.read-only {
+    .toolbar {
+      display: none;
+    }
+
+    .ql-container {
+      border: none;
+    }
+
+    .ql-editor {
+      padding: 0;
+    }
+  }
+}

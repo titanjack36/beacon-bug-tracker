@@ -1,0 +1,74 @@
+@import "./colors.scss";
+
+.project-wrapper {
+  flex-grow: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.project {
+  min-width: 0;
+  
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  .dash {
+    .top {
+      padding: 38px 90px 23px 90px;
+
+      display: flex;
+      justify-content: space-between;
+
+      .title {
+        font-size: 28px;
+        font-weight: bold;
+        
+        @include theme() {
+          color: getColor(textLevel1);
+        }
+      }
+
+      .new-task-btn {
+        @include theme() {
+          background: getColor(primary);
+        }
+
+        .icon {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+
+  .menu {
+    padding: 0 90px;
+    @include theme() {
+      border-bottom: 1px solid getColor(separator);
+    }
+
+    a {
+      display: inline-block;
+      padding: 10px 0 11px 0;
+      margin-bottom: -1px;
+
+      text-decoration: none;
+      text-align: center;
+
+      width: 80px;
+
+      @include theme() {
+        color: getColor(textLevel5);
+      }
+    
+      &.active {
+        font-weight: 500;
+
+        @include theme() {
+          color: getColor(textLevel1);
+          border-bottom: 2px solid getColor(textLevel1);
+        }
+      }
+    }
+  }
+}
