@@ -1,59 +1,35 @@
 import { closeTask } from "../../features/taskSlice";
-import { selectProject, setSelectedTaskIdx } from "../../features/sideViewSlice";
+import { selectProject, selectTask } from "../../features/sideViewSlice";
 import { useAppDispatch, useAppSelector } from "../../storeHooks";
 import '../../styles/SideView.scss';
-import { useEffect } from "react";
-import { usePrevious } from "../../utils/util";
 
 type ClickEvent = React.MouseEvent<HTMLButtonElement>;
 
 function SideViewMenu() {
   const dispatch = useAppDispatch();
-  const selectedTaskIdx = useAppSelector(state => state.sideView.selectedTaskIdx);
-  const openTaskStates = useAppSelector(state => state.task.openTaskStates);
-  const previousOpenTaskCount = usePrevious(openTaskStates.length) || 0;
-  const loadedTasks = useAppSelector(state => state.task.loadedTasks);
-  const loadedTaskMap = new Map(loadedTasks.map(t => [t.id, t]));
   
-  const isProjectSelected = useAppSelector(state => state.sideView.isProjectSelected);
+  const { openTaskStates, selectedTaskState, showProject } = useAppSelector(state => state.sideView);
   const selectedProject = useAppSelector(state => state.project.selectedProject);
-  const showProjectTab = useAppSelector(state => state.sideView.showProject);
 
-  // display newly opened tasks
-  // useEffect(() => {
-  //   if (openTaskStates.length > previousOpenTaskCount) {
-  //     dispatch(setSelectedTaskIdx(openTaskStates.length - 1));
-  //   }
-  // }, [openTaskStates.length]);
-
-  const handleCloseTask = (event: ClickEvent, taskId: string, taskIdx: number) => {
+  const handleCloseTask = (event: ClickEvent, taskId: string) => {
     event.stopPropagation();
-    if (selectedTaskIdx === taskIdx) {
-      let newSelectedTaskIdx = 0;
-      if (selectedTaskIdx > 0) {
-        newSelectedTaskIdx = selectedTaskIdx - 1;
-      } else if (openTaskStates.length > 2) {
-        newSelectedTaskIdx = 1;
-      }
-      dispatch(setSelectedTaskIdx(newSelectedTaskIdx));
-    }
     dispatch(closeTask(taskId));
   };
 
-  const handleSelectTask = (taskIdx: number) => {
-    dispatch(setSelectedTaskIdx(taskIdx));
-  }
+  const handleSelectTask = (taskId: string) => {
+    dispatch(selectTask(taskId));
+  };
 
   const handleSelectProject = () => {
     dispatch(selectProject());
-  }
+  };
 
   return (
     <div className="side-view-menu">
       {
-        showProjectTab && selectedProject && 
+        showProject && selectedProject && 
           <div role="button"
-              className={isProjectSelected ? "menu-tab selected" : "menu-tab"}
+              className={selectedTaskState ? "menu-tab" : "menu-tab selected" }
               onClick={handleSelectProject}
               >
             <div className="text">
@@ -63,19 +39,17 @@ function SideViewMenu() {
           </div>
       }
       {
-        openTaskStates.map((taskState, taskIdx) => {
-          const loadedTask = loadedTaskMap.get(taskState.taskId);
-          const isLoaded = taskState.state === 'loaded' && loadedTask;
-          const isSelected = !isProjectSelected && taskIdx === selectedTaskIdx;
+        openTaskStates.map(({ taskId, loadedTask }) => {
+          const isSelected = taskId === selectedTaskState?.taskId;
           return (
-            <div key={taskState.taskId} role="button"
+            <div key={taskId} role="button"
                 className={isSelected ? "menu-tab selected" : "menu-tab"}  
-                onClick={() => handleSelectTask(taskIdx)}>
+                onClick={() => handleSelectTask(taskId)}>
               <div className="text">
-                <div className="title">{isLoaded ? loadedTask.title : taskState.taskId }</div>
-                <div className="subtitle">{isLoaded ? loadedTask.id : 'Loading...'}</div>
+                <div className="title">{loadedTask ? loadedTask.title : taskId }</div>
+                <div className="subtitle">{loadedTask ? loadedTask.id : 'Loading...'}</div>
               </div>
-              <button onClick={(event) => handleCloseTask(event, taskState.taskId, taskIdx)}>
+              <button onClick={(event) => handleCloseTask(event, taskId)}>
                 <div className="icon icon-plus"/>
               </button>
             </div>

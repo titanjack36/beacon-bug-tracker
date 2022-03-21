@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 export type ResizableDirection = 'north' | 'south' | 'east' | 'west';
 
@@ -35,14 +35,11 @@ export default function Resizable(
   const { initialWidth, initialHeight, directions } = config;
 
   const resizableElRef = useRef<HTMLDivElement>(null);
-  const [resizableStyles, setResizableStyles] = useState<React.CSSProperties>({
-    ...initResizableStyles, width: initialWidth, height: initialHeight, ...style });
+  const [resizableStyles, setResizableStyles] = useState<React.CSSProperties>(initResizableStyles);
   const [sliderStyles, setSliderStyles] = useState<SliderStyles>(initSliderStyles);
   const [dragDirection, setDragDirection] = useState<ResizableDirection | undefined>(undefined);
-
-  useEffect(() => {
-    setResizableStyles({...resizableStyles, ...style })
-  }, [style]);
+  const [currentWidth, setCurrentWidth] = useState<string | undefined>(initialWidth);
+  const [currentHeight, setCurrentHeight] = useState<string | undefined>(initialHeight);
 
   useEffect(() => {
     const resizableEl = resizableElRef.current;
@@ -62,7 +59,11 @@ export default function Resizable(
     }
   }, [resizableElRef]);
 
-  const onMouseDrag = (event: MouseEvent) => {
+  useEffect(() => {
+    setResizableStyles({ ...resizableStyles, ...style, width: currentWidth, height: currentHeight });
+  }, [style, currentWidth, currentHeight]);
+
+  const onMouseDrag = useCallback((event: MouseEvent) => {
     event.preventDefault();
     const { top, bottom, right, left, height, width } = resizableElRef.current!.getBoundingClientRect();
     let newWidth = width, newHeight = height;
@@ -84,12 +85,12 @@ export default function Resizable(
       onSizeChange(newWidth, newHeight);
     }
     if (newWidth !== width) {
-      setResizableStyles({ ...resizableStyles, width: `${newWidth}px` });
+      setCurrentWidth(`${newWidth}px`);
     }
-    if (newHeight != height) {
-      setResizableStyles({ ...resizableStyles, height: `${newHeight}px` });
+    if (newHeight !== height) {
+      setCurrentHeight(`${newHeight}px`);
     }
-  }
+  }, [dragDirection, onSizeChange]);
 
   const onStartDrag = (direction: ResizableDirection) => {
     setDragDirection(direction);
@@ -110,7 +111,7 @@ export default function Resizable(
       };
     }
     // any state or prop used inside event listener must be added to dependency array
-  }, [dragDirection]);
+  }, [onMouseDrag]);
 
   if (!children) {
     return null;

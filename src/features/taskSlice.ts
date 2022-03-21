@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { OpenTaskState, Task } from '../models/task.type';
 import { createGetRequest } from '../utils/api';
-import { TaskFetchResponse } from '../models/api.type';
+import { FetchTaskResponse } from '../models/api.type';
 
 type TaskState = {
   loadedTasks: Task[];
@@ -25,7 +25,7 @@ const initialState: TaskState = {
 //   return data as Task;
 // });
 
-export const fetchTasks = createGetRequest<TaskFetchResponse, { ids: string[] }>('task/fetchTask', 'task');
+export const fetchTasks = createGetRequest<FetchTaskResponse, { ids: string[] }>('task/fetchTask', 'task');
 
 export const taskSlice = createSlice({
   name: 'task',

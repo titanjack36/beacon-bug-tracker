@@ -1,6 +1,7 @@
 export type OpenTaskState = {
   taskId: string;
-  state: 'loading' | 'loaded' | 'invalid';
+  state: 'unloaded' | 'loading' | 'loaded' | 'invalid' | 'error';
+  loadedTask?: Task;
 };
 
 export type TaskSummary = {
