@@ -1,17 +1,22 @@
+import React from "react";
 import { Tag } from "../../models/task.type";
 
-type TagViewProps = { tags: Tag[] } & React.AllHTMLAttributes<HTMLDivElement>;
+type TagViewProps = {
+  tag: Tag;
+  onDelete?(event: React.MouseEvent): void;
+} & React.AllHTMLAttributes<HTMLDivElement>;
 
-function TagView({ tags, className, ...props }: TagViewProps) {
+function TagView({ tag, onDelete }: TagViewProps) {
   return (
-    <div {...props} className={`tag-view ${className}`} >
+    <div key={tag.value} className={`tag ${tag.color}`}>
+      {tag.value}
       {
-        tags.map(tag => (
-          <div key={tag.value} className={`tag ${tag.color}`}>{tag.value}</div>
-        ))
+        onDelete && <button className="close-tag" onClick={(event) => onDelete(event)}>
+          <span className="icon icon-close"/>
+        </button>
       }
     </div>
-  )
+  );
 }
 
 export default TagView;

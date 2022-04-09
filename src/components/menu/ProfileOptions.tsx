@@ -1,4 +1,4 @@
-import '../../styles/ProfileOptions.scss'
+import '../../styles/Profile.scss'
 
 function ProfileOptions() {
   return (

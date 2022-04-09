@@ -1,33 +1,43 @@
 import { AxiosError } from "axios";
-import { useState } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
-import { useAppSelector } from "../../storeHooks";
+import React, { useEffect, useState } from "react";
+import { Navigate, Route, Routes, useParams } from "react-router-dom";
+import { fetchProject } from "../../features/projectSlice";
+import { useAppDispatch, useAppSelector } from "../../storeHooks";
 import { showErrorToast } from "../../utils/util";
 import TaskBoard from "../tasks/TaskBoard";
 import TaskList from "../tasks/TaskList";
 import ProjectMenuLink from "./ProjectMenuLink";
 
-function Project() {
-  const project = useAppSelector(state => state.project.selectedProject);
+function Project({ className='', ...props }: React.AllHTMLAttributes<HTMLDivElement>) {
+  const dispatch = useAppDispatch();
+  const { projectId } = useParams<"projectId">();
+  const project = useAppSelector(state => state.project.currentProject);
   const [ isLoading, setIsLoading ] = useState(true);
   const [ invalidProjectId, setInvalidProjectId ] = useState<string | undefined>(undefined);
 
-  const handleLoad = () => setIsLoading(false);
-
-  const handleError = (projId: string, err: AxiosError) => {
-    if (err.response?.status === 400) {
-      setInvalidProjectId(projId);
+  useEffect(() => {
+    setIsLoading(true);
+    if (projectId && projectId !== project?.id) {
+      dispatch(fetchProject({ id: projectId })).unwrap()
+        .then(() => setIsLoading(false))
+        .catch((err: AxiosError) => {
+          if (err.response?.status === 400) {
+            setInvalidProjectId(projectId);
+          } else {
+            showErrorToast(`Failed to load project '${projectId}'. Click to retry.`);
+          }
+        });
     } else {
-      showErrorToast(`Failed to load project '${projId}'. Click to retry.`);
+      setIsLoading(false);
     }
-  };
+  }, [projectId]);
 
   if (invalidProjectId) {
     return <div>The project with ID {invalidProjectId} does not exist</div>;
   }
 
   return (
-    <div className="project">
+    <div className={`project ${className}`} {...props}>
       {
         (isLoading || !project) ?
           (
@@ -55,7 +65,7 @@ function Project() {
           )
       }
       <Routes>
-        <Route path="board" element={<TaskBoard onLoad={handleLoad} onError={handleError}/>} />
+        <Route path="board" element={<TaskBoard />} />
         <Route path="list" element={<TaskList />} />
         <Route path="*" element={<Navigate to="board" />} />
       </Routes>

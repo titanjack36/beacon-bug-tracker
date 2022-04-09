@@ -1,0 +1,51 @@
+@import '../colors';
+
+.profile-select {
+  .profile-input {
+    background: transparent;
+    margin-left: 10px;
+    flex-grow: 1;
+    min-width: 0;
+    border: none;
+    
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .select-dropdown {
+    .item {
+      .profile-view {
+        display: flex;
+        align-items: center;
+
+        .profile-image {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+
+  &.editing {
+    .select-content {
+      .profile-input {
+        outline: none;
+      }
+  
+      .profile-image {
+        width: 24px;
+        height: 24px;
+        margin: 3px;
+        margin-right: 0;
+      }
+
+      .select-dropdown {
+        .profile-image {
+          width: 28px;
+          height: 28px;
+        }
+      }
+    }
+  }
+}

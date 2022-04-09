@@ -1,23 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { FetchTaskResponse } from '../models/api.type';
-import { OpenTaskState, TaskSummary } from '../models/task.type';
+import { OpenTaskState } from '../models/task.type';
 import { createGetRequest } from '../utils/api';
 
 type SideViewState = {
   openTaskStates: OpenTaskState[];
   selectedTaskState?: OpenTaskState;
   isProjectSelected: boolean;
-  showProject: boolean;
 };
 
 const initialState: SideViewState = {
   openTaskStates: [],
   selectedTaskState: undefined,
-  isProjectSelected: false,
-  showProject: false
+  isProjectSelected: false
 };
 
-export const fetchTasks = createGetRequest<FetchTaskResponse, { taskIds: string[] }>('task/fetchTask', 'task');
+export const fetchTasks = createGetRequest<FetchTaskResponse, { taskIds: string[] }>('task/fetchTask', '/task');
 
 export const sideViewSlice = createSlice({
   name: 'task',
@@ -55,15 +53,19 @@ export const sideViewSlice = createSlice({
       }
       openTaskStates.splice(closedTaskIdx, 1);
     },
+    updateTaskState: (state, action: PayloadAction<OpenTaskState>) => {
+      const newTaskState = action.payload;
+      const idx = state.openTaskStates.findIndex(s => s.taskId === newTaskState.taskId);
+      if (idx >= 0) {
+        state.openTaskStates[idx] = newTaskState;
+        if (newTaskState.taskId === state.selectedTaskState?.taskId) {
+          state.selectedTaskState = newTaskState;
+        }
+      }
+    },
     selectProject: (state) => {
       state.isProjectSelected = true;
       state.selectedTaskState = undefined;
-    },
-    setShowProject: (state, action: PayloadAction<boolean>) => {
-      state.showProject = action.payload;
-      if (!state.showProject) {
-        state.isProjectSelected = false;
-      }
     }
   },
   extraReducers: builder => {
@@ -79,8 +81,14 @@ export const sideViewSlice = createSlice({
 
         state.openTaskStates.forEach(taskState => {
           if (fetchedTaskMap.has(taskState.taskId)) {
+            const loadedTask = fetchedTaskMap.get(taskState.taskId);
             taskState.state = 'loaded';
-            taskState.loadedTask = fetchedTaskMap.get(taskState.taskId);
+            taskState.loadedTask = loadedTask;
+            taskState.editState = {
+              description: { value: loadedTask!.description, isEditing: false },
+              newComment: { value: '', isEditing: false },
+              isModified: false
+            };
           } else if (invalidTaskIdSet.has(taskState.taskId)) {
             taskState.state = 'invalid';
           } else if (errorTaskIdSet.has(taskState.taskId)) {
@@ -94,6 +102,6 @@ export const sideViewSlice = createSlice({
   }
 });
 
-export const { openTasks, selectTask, selectProject, setShowProject } = sideViewSlice.actions;
+export const { openTasks, selectTask, updateTaskState, selectProject } = sideViewSlice.actions;
 
 export default sideViewSlice.reducer;

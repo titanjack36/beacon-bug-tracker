@@ -34,14 +34,18 @@ function TaskCard({ task }: TaskCardProps ) {
       </div>
       <div className="attr">
         <div className="attr-title subtitle">Tags</div>
-        <TagView tags={task.tags} className="attr-value"/>
+        <div className="attr-value">
+          {
+            task.tags.map(tag => <TagView key={tag.value} tag={tag} className="attr-value"/>)
+          }
+        </div>
       </div>
       <div className={`priority-bar show-priority-${task.priority}`}>
-        <div className="priority priority-1"></div>
-        <div className="priority priority-2"></div>
-        <div className="priority priority-3"></div>
-        <div className="priority priority-4"></div>
-        <div className="priority priority-5"></div>
+        {
+          Array.from(Array(5).keys()).map(idx => (
+            <div key={idx} className={`priority priority-${idx + 1}`}></div>
+          ))
+        }
       </div>
     </div>
   );

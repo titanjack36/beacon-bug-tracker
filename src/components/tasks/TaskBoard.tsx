@@ -6,33 +6,27 @@ import { useAppDispatch, useAppSelector } from '../../storeHooks';
 import { showErrorToast } from '../../utils/util';
 import TaskCard from './TaskCard';
 
-type TaskBoardProps = { 
-  onLoad: () => void;
-  onError: (projId: string, err: AxiosError) => void;
-};
-
-function TaskBoard({ onLoad, onError }: TaskBoardProps) {
+function TaskBoard() {
   const disptach = useAppDispatch();
   const { projectId } = useParams<"projectId">();
   const [ isLoading, setIsLoading ] = useState(true);
+  const board = useAppSelector(state => state.project.currentBoard);
 
   useEffect(() => {
     setIsLoading(true);
-    if (projectId) {
+    if (projectId && projectId !== board?.projectId) {
       disptach(fetchProjectBoard({ id: projectId })).unwrap()
-        .then(() => {
-          onLoad();
-          setIsLoading(false);
-        })
-        .catch((err: AxiosError) => onError(projectId, err));
+        .then(() => setIsLoading(false))
+        .catch(_ => showErrorToast("Failed to load task board. Click to retry."));
+    } else {
+      setIsLoading(false);
     }
   }, [projectId]);
 
-  const sprints = useAppSelector(state => state.project.selectedProject?.board);
-
-  if (isLoading || !sprints) {
+  if (isLoading || !board) {
     return <div>Loading task board.</div>
   }
+  const sprints = board.sprints;
 
   return (
     <div className="task-board">

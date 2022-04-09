@@ -63,7 +63,7 @@ export default function Resizable(
     setResizableStyles({ ...resizableStyles, ...style, width: currentWidth, height: currentHeight });
   }, [style, currentWidth, currentHeight]);
 
-  const onMouseDrag = useCallback((event: MouseEvent) => {
+  const onMouseDrag = (event: MouseEvent) => {
     event.preventDefault();
     const { top, bottom, right, left, height, width } = resizableElRef.current!.getBoundingClientRect();
     let newWidth = width, newHeight = height;
@@ -90,7 +90,7 @@ export default function Resizable(
     if (newHeight !== height) {
       setCurrentHeight(`${newHeight}px`);
     }
-  }, [dragDirection, onSizeChange]);
+  };
 
   const onStartDrag = (direction: ResizableDirection) => {
     setDragDirection(direction);
@@ -111,7 +111,7 @@ export default function Resizable(
       };
     }
     // any state or prop used inside event listener must be added to dependency array
-  }, [onMouseDrag]);
+  }, [dragDirection]);
 
   if (!children) {
     return null;

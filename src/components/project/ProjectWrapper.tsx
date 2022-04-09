@@ -5,11 +5,12 @@ import '../../styles/Project.scss';
 import SideView from "../side-view/SideView";
 import Resizable, { ResizableConfig } from "../common/Resizable";
 import Project from "./Project";
-import { fetchTasks, openTasks, selectTask, setShowProject } from "../../features/sideViewSlice";
+import { fetchTasks, openTasks, selectTask } from "../../features/sideViewSlice";
 import { showErrorToast } from "../../utils/util";
 import { AxiosError } from "axios";
 
 const initialResizeWidth = 800;
+const collapseWidth = 550;
 
 const initialResizableStyle: React.CSSProperties = {
   minWidth: '600px',
@@ -71,11 +72,12 @@ function ProjectWrapper() {
 
 
   const [hideProjectWindow, setHideProjectWindow] = useState(false);
+  const [showProject, setShowProject] = useState(false);
   const [resizableStyle, setResizableStyle] = useState(initialResizableStyle);
   const [resizeWidth, setResizeWidth] = useState(initialResizeWidth);
   const wrapperElRef = useRef<HTMLDivElement>(null);
 
-  const handleResizeChange = useCallback((newWidth: number, _?: number) => {
+  const handleResizeChange = (newWidth: number, _?: number) => {
     if (newWidth !== resizeWidth) {
       setResizeWidth(newWidth);
     }
@@ -83,18 +85,18 @@ function ProjectWrapper() {
       return;
     }
     const wrapperWidth = wrapperElRef.current.offsetWidth;
-    if (newWidth > wrapperWidth * 0.75) {
+    if (wrapperWidth - newWidth < collapseWidth) {
       if (!hideProjectWindow) {
-        dispatch(setShowProject(true));
+        setShowProject(true);
         setHideProjectWindow(true);
         setResizableStyle({...resizableStyle, minWidth: '100%'});
       }
     } else if (hideProjectWindow) {
-      dispatch(setShowProject(false));
+      setShowProject(false);
       setHideProjectWindow(false);
       setResizableStyle(initialResizableStyle);
     }
-  }, [hideProjectWindow]);
+  };
 
   useEffect(() => {
     const wrapperEl = wrapperElRef.current;
@@ -104,7 +106,7 @@ function ProjectWrapper() {
   
       return () => resizeObs.unobserve(wrapperEl);
     }
-  }, [wrapperElRef, resizeWidth, handleResizeChange]);
+  }, [wrapperElRef, resizeWidth, hideProjectWindow]);
 
   const resizableConfig: ResizableConfig = {
     initialWidth: `${resizeWidth}px`,
@@ -113,11 +115,11 @@ function ProjectWrapper() {
 
   return (
     <div className="project-wrapper" ref={wrapperElRef}>
-      { (!openTaskStates.length || !hideProjectWindow) && <Project /> }
+      <Project className={(!openTaskStates.length || !hideProjectWindow) ? '' : 'd-none'}/>
       {
         !!openTaskStates.length &&
           <Resizable config={resizableConfig} style={resizableStyle} onSizeChange={handleResizeChange}>
-            <SideView />
+            <SideView showProject={showProject} />
           </Resizable>
       }
     </div>

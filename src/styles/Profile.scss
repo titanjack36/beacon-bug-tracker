@@ -1,0 +1,22 @@
+.profile-options {
+  background: rgb(194, 0, 161);
+  border: none;
+
+  height: 35px;
+  width: 35px;
+  border-radius: 100px;
+}
+
+.profile-view {
+  .profile-name {
+    margin-left: 10px;
+  }
+}
+
+.profile-image {
+  width: 30px;
+  height: 30px;
+
+  border-radius: 50%;
+  flex-shrink: 0;
+}

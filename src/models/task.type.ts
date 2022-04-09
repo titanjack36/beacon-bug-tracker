@@ -1,7 +1,10 @@
+import { TextEditorState } from "./edit.type";
+
 export type OpenTaskState = {
   taskId: string;
   state: 'unloaded' | 'loading' | 'loaded' | 'invalid' | 'error';
   loadedTask?: Task;
+  editState?: TaskEditState;
 };
 
 export type TaskSummary = {
@@ -12,7 +15,7 @@ export type TaskSummary = {
   dateCreated: string;
   dateLastModified: string;
   sprint: string;
-  priority: string;
+  priority: number;
   state: string;
   project: Project;
   type: string;
@@ -25,6 +28,11 @@ export type Task = TaskSummary & {
   parent?: TaskSummary;
   subtasks?: TaskSummary[];
 };
+
+export type TaskBoard = {
+  projectId: string;
+  sprints: SprintGroup[];
+}
 
 export type SprintGroup = {
   sprintName: string;
@@ -67,4 +75,16 @@ export type TaskListItem = {
 export type TaskListGroup = {
   groupName: string;
   tasks: TaskListItem[];
+};
+
+
+export type UpdatedTaskSummary = Omit<
+  Partial<TaskSummary>, 
+  'id' | 'createdBy' | 'dateCreated' | 'dateLastModified'
+>;
+
+export type TaskEditState = {
+  description: TextEditorState;
+  newComment: TextEditorState;
+  isModified: boolean;
 };

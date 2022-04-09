@@ -6,6 +6,7 @@ $themes: (
     secondaryBg: #FCFDFF,
     primary: #008FFF,
     secondary: #EBEDF6,
+    tertiary: #d3d6df,
     textOnPrimary: #FFFFFF,
     textLevel1: #000000,
     textLevel2: #303030,
@@ -23,11 +24,17 @@ $themes: (
     priority4: #FFCF53,
     priority5: #FF7979,
     tagGreen: #D8FFCA,
+    tagGreenGrad: linear-gradient(90deg, rgba(216,255,202,0) 0%, rgba(216,255,202,1) 30%),
     tagPurple: #CACCFF,
+    tagPurpleGrad: linear-gradient(90deg, rgba(202,204,255,0) 0%, rgba(202,204,255,1) 30%),
     tagRed: #FFCACA,
+    tagRedGrad: linear-gradient(90deg, rgba(255,202,202,0) 0%, rgba(255,202,202,1) 30%),
     textboxBg: #F7F7F7,
     textboxBorder: #ECECEC,
-    dropShadow: rgba(0, 0, 0, 0.08)
+    dropShadow: rgba(0, 0, 0, 0.1),
+    dropShadowDark: rgba(0, 0, 0, 0.2),
+    placeholder: #e7ebee,
+    placeholderShine: #dedfe4
   )
 );
 

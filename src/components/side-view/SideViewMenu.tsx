@@ -5,11 +5,15 @@ import '../../styles/SideView.scss';
 
 type ClickEvent = React.MouseEvent<HTMLButtonElement>;
 
-function SideViewMenu() {
+type SideViewMenuProps = {
+  showProject: boolean;
+}
+
+function SideViewMenu({ showProject }: SideViewMenuProps) {
   const dispatch = useAppDispatch();
   
-  const { openTaskStates, selectedTaskState, showProject } = useAppSelector(state => state.sideView);
-  const selectedProject = useAppSelector(state => state.project.selectedProject);
+  const { openTaskStates, selectedTaskState } = useAppSelector(state => state.sideView);
+  const selectedProject = useAppSelector(state => state.project.currentProject);
 
   const handleCloseTask = (event: ClickEvent, taskId: string) => {
     event.stopPropagation();

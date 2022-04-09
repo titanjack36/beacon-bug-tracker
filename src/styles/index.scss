@@ -1,7 +1,6 @@
 @import "toastify-js/src/toastify.css";
 
 @import './colors';
-@import './shared';
 
 body {
   box-sizing: border-box;
@@ -62,5 +61,126 @@ code {
 
   .toast-close {
     margin-left: 10px;
+  }
+}
+
+.placeholder {
+  @include theme() {
+    background: getColor(placeholder);
+    background-image: linear-gradient(
+      to right, 
+      getColor(placeholder) 0%,
+      getColor(placeholderShine) 20%,
+      getColor(placeholder) 40%,
+      getColor(placeholder) 100%
+    );
+    background-repeat: no-repeat;
+    background-size: 800px 104px; 
+  }
+  
+  cursor: inherit;
+  animation-duration: 1s;
+  animation-fill-mode: forwards; 
+  animation-iteration-count: infinite;
+  animation-name: placeholderShimmer;
+  animation-timing-function: linear;
+}
+
+@keyframes placeholderShimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  
+  100% {
+    background-position: 468px 0; 
+  }
+}
+
+.tag {
+  border-radius: 4px;
+  padding: 0 5px 2px 5px;
+  margin-right: 5px;
+
+  font-weight: normal;
+
+  position: relative;
+
+  @include theme() {
+    color: getColor(textLevel3);
+    
+    &.green {
+      background: getColor(tagGreen);
+    }
+
+    &.purple {
+      background: getColor(tagPurple);
+    }
+
+    &.red {
+      background: getColor(tagRed);
+    }
+  }
+
+  .close-tag {
+    background: none;
+    border: none;
+
+    font-size: 10px;
+
+    position: absolute;
+    right: 0;
+    height: 100%;
+
+    opacity: 0;
+
+    @include theme() {
+      color: getColor(textLevel4);
+    }
+  }
+
+  &:hover {
+    @include theme() {
+      &.green .close-tag {
+        background: getColor(tagGreenGrad);
+      }
+
+      &.purple .close-tag {
+        background: getColor(tagPurpleGrad);
+      }
+
+      &.red .close-tag {
+        background: getColor(tagRedGrad);
+      }
+    }
+
+    .close-tag {
+      opacity: 1;
+    }
+  }
+}
+
+.resizable .slider {
+  &.slider-west {
+    width: 5px;
+    cursor: ew-resize;
+  }
+
+  &.slider-north {
+    height: 5px;
+    cursor: ns-resize;
+  }
+
+  transition: opacity 0.25s;
+  transition-delay: 0.1s;
+  opacity: 0;
+
+  z-index: 1000;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  @include theme() {
+    background: getColor(primary);
   }
 }

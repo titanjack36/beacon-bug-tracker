@@ -6,9 +6,12 @@
   min-height: 0;
 
   .header {
-    padding: 35px;
-    padding-top: 30px;
+    padding: 25px 35px;
+    padding-top: 20px;
     position: sticky;
+
+    display: flex;
+    justify-content: space-between;
 
     @include theme() {
       box-shadow: 0px 4px 10px getColor(dropShadow);
@@ -28,6 +31,23 @@
       .icon {
         font-size: 9px;
         margin: 0 5px;
+      }
+    }
+
+    .action-section {
+      display: flex;
+      align-items: center;
+
+      .modified-actions {
+        display: flex;
+        
+        .btn {
+          padding: 12px;
+        }
+  
+        .cancel {
+          margin-right: 10px;
+        }
       }
     }
   }
@@ -51,7 +71,7 @@
       }
     }
   
-    .text {
+    .field {
       display: flex;
       align-items: center;
       font-size: 14px;
@@ -65,29 +85,68 @@
       }
     }
   
-    .info {
+    .info-section {
       margin: 30px;
+
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   
-      display: flex;
-      flex-wrap: wrap;
-  
-      .item {
-        margin-bottom: 15px;
-        min-width: 200px;
-        flex: 0 0 auto;
-  
-        .text {
-          height: 30px;
+      &-item {
+        .label {
+          padding-left: 5px;
+          margin-bottom: 2px;
         }
   
-        &:not(:last-child) {
-          margin-right: 15px;
+        .field {
+          height: 40px;
+          border-radius: 6px;
+          padding: 5px;
+
+          transition: background 0.25s;
+
+          .field-selected {
+            margin: auto 0;
+          }
+
+          &.editing .field-selected {
+            margin-left: 6px;
+          }
+
+          &:hover {
+            @include theme() {
+              background: getColor(secondary);
+            }
+
+            &.editing,&.disabled {
+              background: transparent;
+            }
+          }
         }
       }
     }
   
     .description {
       margin: 30px;
+
+      .label {
+        padding-left: 5px;
+      }
+
+      
+
+      .text-editor {
+        border-radius: 6px;
+        padding: 5px;
+
+        transition: background 0.25s;
+
+        &.read-only:hover {
+          @include theme() {
+            background: getColor(secondary);
+          }
+        }
+      }
     }
   
     .comments {

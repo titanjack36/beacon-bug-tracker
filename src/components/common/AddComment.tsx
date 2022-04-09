@@ -2,14 +2,20 @@ import { useState } from "react";
 import TextEditor from "./TextEditor";
 import '../../styles/AddComment.scss';
 import Resizable, { ResizableConfig } from "./Resizable";
+import { TextEditorState } from "../../models/edit.type";
 
-export default function AddComment() {
-  const [newComment, setNewComment] = useState('');
-  const [isWritingNewComment, setIsWritingNewComment] = useState(false);
+type AddCommentProps = {
+  newComment: TextEditorState;
+  onStateUpdated(state: TextEditorState): void;
+}
+
+export default function AddComment({ newComment, onStateUpdated }: AddCommentProps) {
+
+  const { isEditing } = newComment;
 
   const resizableConfig: ResizableConfig = {
-    initialHeight: isWritingNewComment ? '135px' : '60px',
-    directions: isWritingNewComment ? ['north'] : []
+    initialHeight: isEditing ? '135px' : '60px',
+    directions: isEditing ? ['north'] : []
   }
   
   const resizableStyle: React.CSSProperties = {
@@ -19,15 +25,14 @@ export default function AddComment() {
 
   return (
     <Resizable config={resizableConfig} style={resizableStyle}>
-      <div className={isWritingNewComment ? 'add-comment' : 'add-comment minimized'} >
+      <div className={isEditing ? 'add-comment' : 'add-comment minimized'} >
         {
-          !isWritingNewComment && <div className="profile"></div>
+          !isEditing && <div className="profile"></div>
         }
         <TextEditor
             id="addComment"
-            value={newComment}
-            onChange={setNewComment}
-            onClick={() => setIsWritingNewComment(true)} 
+            state={newComment}
+            onChange={onStateUpdated}
             placeholder="Add a comment"
             readOnly={false} />
         <div className="d-flex flex-column">
@@ -36,8 +41,10 @@ export default function AddComment() {
             Send
           </button>
           {
-            isWritingNewComment &&
-            <button className="btn btn-secondary" onClick={() => setIsWritingNewComment(false)}>
+            isEditing &&
+            <button
+                className="btn btn-secondary"
+                onClick={() => onStateUpdated({...newComment, isEditing: false})}>
               Cancel
             </button>
           }
