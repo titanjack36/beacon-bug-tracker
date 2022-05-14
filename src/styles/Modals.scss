@@ -1,0 +1,42 @@
+@import './colors';
+
+.add-project-modal {
+  &-body {
+    label {
+      display: block;
+
+      font-size: 13px;
+      font-weight: 500;
+
+      margin-bottom: 10px;
+
+      @include theme() {
+        color: getColor(textLevel3);
+      }
+    }
+
+    input {
+      display: block;
+
+      font-size: 16px;
+
+      width: 100%;
+      padding: 5px 2px;
+      margin-top: 5px;
+      border-radius: 6px;
+
+      @include theme() {
+        border: 1px solid getColor(textboxBorder);
+        background: getColor(textboxBg);
+      }
+    }
+
+    .error {
+      font-weight: normal;
+      
+      @include theme() {
+        color: getColor(textError);
+      }
+    }
+  }
+}

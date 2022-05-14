@@ -1,8 +1,11 @@
 import { TextEditorState } from "./edit.type";
+import { Profile } from "./user.type";
 
 export type OpenTaskState = {
   taskId: string;
-  state: 'unloaded' | 'loading' | 'loaded' | 'invalid' | 'error';
+  project?: Project;
+  state: 'loading' | 'loaded' | 'invalid' | 'error' | 'draft';
+  taskTitle?: string;
   loadedTask?: Task;
   editState?: TaskEditState;
 };
@@ -10,15 +13,15 @@ export type OpenTaskState = {
 export type TaskSummary = {
   id: string;
   title: string;
-  assignedTo: Profile;
+  assignedTo: Profile | null;
   createdBy: Profile;
   dateCreated: string;
   dateLastModified: string;
   sprint: string;
-  priority: number;
-  state: string;
+  priority: number | null;
+  state: string | null;
   project: Project;
-  type: string;
+  type: string | null;
   tags: Tag[];
 };
 
@@ -57,12 +60,6 @@ export type Comment = {
 export type Tag = {
   value: string;
   color: string;
-};
-
-export type Profile = {
-  name: string;
-  username: string;
-  profileImageUrl: string;
 };
 
 

@@ -1,7 +1,7 @@
 import '../../styles/editable/PrioritySelect.scss';
 
 type PrioritySelectProps = {
-  selectedPriority: number;
+  selectedPriority: number | null;
   onSelectPriority(priority: number): void;
 } & React.AllHTMLAttributes<HTMLDivElement>;
 

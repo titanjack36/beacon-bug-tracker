@@ -43,19 +43,33 @@ function SideViewMenu({ showProject }: SideViewMenuProps) {
           </div>
       }
       {
-        openTaskStates.map(({ taskId, loadedTask }) => {
+        openTaskStates.map(({ state, taskId, taskTitle, loadedTask }) => {
           const isSelected = taskId === selectedTaskState?.taskId;
+          let title, subtitle;
+          if (loadedTask) {
+            title = taskTitle!;
+            subtitle = taskId;
+          } else if (state === 'draft') {
+            title = taskTitle! || 'Untitled';
+            subtitle = 'Draft';
+          } else {
+            title = taskId;
+            subtitle = 'Loading...';
+          }
+
           return (
             <div key={taskId} role="button"
                 className={isSelected ? "menu-tab selected" : "menu-tab"}  
                 onClick={() => handleSelectTask(taskId)}>
               <div className="text">
-                <div className="title">{loadedTask ? loadedTask.title : taskId }</div>
-                <div className="subtitle">{loadedTask ? loadedTask.id : 'Loading...'}</div>
+                <div className="title">{title}</div>
+                <div className="subtitle">{subtitle}</div>
               </div>
-              <button onClick={(event) => handleCloseTask(event, taskId)}>
-                <div className="icon icon-plus"/>
-              </button>
+              <div className="close-wrapper">
+                <button className="close-btn" onClick={(event) => handleCloseTask(event, taskId)}>
+                  <div className="icon icon-close"/>
+                </button>
+              </div>
             </div>
           );
         })

@@ -1,15 +1,15 @@
 import Fuse from 'fuse.js';
 import React, { useEffect, useRef, useState } from 'react';
-import { Profile } from '../../models/task.type';
+import { Profile } from '../../models/user.type';
 import '../../styles/editable/ProfileSelect.scss';
-import { fetchMembers } from '../../utils/api';
+import { getMembers } from '../../utils/api';
 import { showErrorToast } from '../../utils/util';
 import ProfileView from '../common/ProfileView';
 import Select from './Select';
 
 type ProfileSelectProps = {
   projectId: string;
-  selectedProfile: Profile;
+  selectedProfile: Profile | null;
   onSelectProfile(profile: Profile): void;
   alwaysEditing?: boolean;
 } & React.AllHTMLAttributes<HTMLDivElement>;
@@ -26,19 +26,19 @@ export default function ProfileSelect({
     projectId,
     selectedProfile,
     onSelectProfile,
-    alwaysEditing=false,
+    alwaysEditing,
     className='',
     ...props
 }: ProfileSelectProps) {
 
-  const [profileName, setProfileName] = useState(selectedProfile.name);
+  const [profileName, setProfileName] = useState(selectedProfile?.name || '');
   const [fuse, setFuse] = useState<Fuse<Profile> | undefined>(undefined);
   const [fuseResults, setFuseResults] = 
     useState<Fuse.FuseResult<Profile>[] | undefined>(undefined);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    handleProfileNameChange(selectedProfile.name);
+    handleProfileNameChange(selectedProfile?.name || '');
   }, [selectedProfile, fuse]);
 
   const handleInputFocus = async (event: React.FocusEvent<HTMLInputElement>) => {
@@ -48,7 +48,7 @@ export default function ProfileSelect({
       setFuse(fuse);
     } else {
       try {
-        const members = await fetchMembers(projectId);
+        const members = await getMembers(projectId);
         setFuse(new Fuse(members, fuseOptions));
       } catch (err: any) {
         showErrorToast("Failed to fetch project members");
@@ -58,7 +58,7 @@ export default function ProfileSelect({
 
   const handleInputBlur = (hasSelectedProfile: boolean) => {
     if (!hasSelectedProfile) {
-      setProfileName(selectedProfile.name);
+      setProfileName(selectedProfile?.name || '');
     }
     inputRef.current?.blur();
   };
@@ -80,8 +80,9 @@ export default function ProfileSelect({
         options={options}
         onSelectOption={({ value }) => onSelectProfile(value)}
         onSelectClick={() => inputRef.current?.focus()}
-        onSelectBlur={(hasSelectedProfile) => handleInputBlur(hasSelectedProfile)}>
-      <ProfileView profile={profileName === selectedProfile.name ? selectedProfile : undefined}/>
+        onSelectBlur={(hasSelectedProfile) => handleInputBlur(hasSelectedProfile)}
+        alwaysEditing={alwaysEditing}>
+      <ProfileView profile={profileName === selectedProfile?.name ? selectedProfile : undefined}/>
       <input 
           className="profile-input"
           ref={inputRef}

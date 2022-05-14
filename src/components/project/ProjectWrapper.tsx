@@ -25,7 +25,10 @@ function ProjectWrapper() {
 
   useEffect(() => {
     const queryTaskIds = tasksSearchParams?.split(',') || [];
-    if (!queryTaskIds.length && openTaskStates.length) {
+    if (queryTaskIds.length === openTaskStates.length) {
+      return;
+
+    } else if (!queryTaskIds.length && openTaskStates.length) {
       // show previously loaded tasks in query params
       const newSearchParams = new URLSearchParams(searchParams);
       newSearchParams.set('tasks', openTaskStates.map(s => s.taskId).join(','));
@@ -61,14 +64,14 @@ function ProjectWrapper() {
   useEffect(() => {
     // when tasks are removed, update query params
     const newSearchParams = new URLSearchParams(searchParams);
-    const openTaskIds = openTaskStates.map(s => s.taskId);
+    const openTaskIds = openTaskStates.filter(s => s.state !== 'draft').map(s => s.taskId);
     if (!openTaskIds.length) {
       newSearchParams.delete('tasks');
     } else {
       newSearchParams.set('tasks', Array.from(openTaskIds).join(','));
     }
     setSearchParams(newSearchParams);
-  }, [openTaskStates.length]);
+  }, [openTaskStates]);
 
 
   const [hideProjectWindow, setHideProjectWindow] = useState(false);

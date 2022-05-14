@@ -8,6 +8,7 @@ import { updateTaskState } from "../../features/sideViewSlice";
 import { DeepPartial } from "../../models/extended.type";
 import { useEffect } from "react";
 import { useCompare, useStateRef } from "../../utils/util";
+import NewTaskView from "../tasks/NewTaskView";
 
 function SideContent() {
   const selectedTaskState = useAppSelector(state => state.sideView.selectedTaskState);
@@ -17,7 +18,8 @@ function SideContent() {
 
   // on switch task, send latest editState to store
   useEffect(() => {
-    if (localTaskState && selectedTaskState?.taskId !== localTaskState.taskId) {
+    if (localTaskState && selectedTaskState?.taskId !== localTaskState.taskId 
+          && localTaskState.state !== 'draft') {
       dispatch(updateTaskState(localTaskState));
     }
   }, [selectedTaskState, localTaskState, dispatch]);
@@ -45,7 +47,24 @@ function SideContent() {
     // const newState = { ...localTaskStateRef.current!, loadedTask: task };
     // console.log('handletaskupdated', localTaskState, localTaskStateRef.current, newState);
     setLocalTaskState((prevState) => ({ ...prevState!, loadedTask: task }));
-  }
+  };
+
+  const handleNewTaskTitleChange = (title: string) => {
+    dispatch(updateTaskState({ ...selectedTaskState!, taskTitle: title }));
+  };
+
+  const handlePublishTask = (task: Task) => {
+    dispatch(updateTaskState({
+      ...selectedTaskState!,
+      state: 'loaded',
+      loadedTask: task,
+      editState: {
+        description: { value: task!.description, isEditing: false },
+        newComment: { value: '', isEditing: false },
+        isModified: false
+      }
+    }));
+  };
 
   if (!selectedTaskState) {
     return <Project />;
@@ -56,11 +75,17 @@ function SideContent() {
   if (selectedTaskState.state === 'error') {
     return <div>Error loading task with ID {selectedTaskState.taskId}</div>;
   }
+  if (selectedTaskState.state === 'draft') {
+    return (
+      <NewTaskView
+          project={selectedTaskState.project!}
+          onTitleChange={handleNewTaskTitleChange}
+          onPublishTask={handlePublishTask}/>
+    );
+  }
   if (!localTaskState?.loadedTask || !localTaskState?.editState) {
     return <div>Loading task</div>;
   }
-
-  console.log(localTaskState);
   
   return (
     <TaskView

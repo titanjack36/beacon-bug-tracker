@@ -18,18 +18,35 @@
       padding: 38px 90px 23px 90px;
 
       display: flex;
-      justify-content: space-between;
+      align-items: flex-start;
 
-      .title {
-        font-size: 28px;
-        font-weight: bold;
-        
-        @include theme() {
-          color: getColor(textLevel1);
+      .left {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        flex-grow: 1;
+        min-width: 0;
+
+        .title {
+          font-size: 28px;
+          font-weight: bold;
+          
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+
+          margin-right: 30px;
+          
+          @include theme() {
+            color: getColor(textLevel1);
+          }
         }
       }
 
       .new-task-btn {
+        flex-shrink: 0;
+        height: 42px;
+
         @include theme() {
           background: getColor(primary);
         }

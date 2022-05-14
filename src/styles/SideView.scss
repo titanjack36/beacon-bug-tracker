@@ -21,11 +21,13 @@
     }
 
     .menu-tab {
-      padding: 10px 12px;
       overflow: hidden;
       width: 225px;
       
       display: flex;
+      position: relative;
+
+      transition: background 0.1s;
       
       @include theme() {
         border-right: 1px solid getColor(separator);
@@ -36,7 +38,9 @@
       }
 
       .text {
+        padding: 10px 12px;
         overflow: hidden;
+        width: 100%;
 
         .title {
           white-space: nowrap;
@@ -57,17 +61,42 @@
         }
       }
 
-      button {
-        flex-shrink: 0;
-        border: none;
-        padding: 0;
-        margin-left: 5px;
+      .close-wrapper {
+        height: 100%;
 
-        background: none;
+        position: absolute;
+        right: 0;
 
-        .icon {
-          transform: rotate(45deg);
-          font-size: 14px;
+        display: flex;
+        align-items: center;
+
+        opacity: 0;
+        
+        transition: opacity 0.1s;
+        
+        .close-btn {
+          border: none;
+          height: 100%;
+          padding: 10px;
+  
+          @include theme() {
+            background: getColor(secondaryGradient);
+          }
+  
+          .icon {
+            font-size: 10px;
+            font-weight: bold;
+          }
+        }
+      }
+
+      &:hover {
+        @include theme() {
+          background: getColor(secondary);
+        }
+
+        .close-wrapper {
+          opacity: 1;
         }
       }
     }

@@ -6,18 +6,33 @@ import { fetchProjectList } from '../../features/projectSlice';
 import { useAppDispatch, useAppSelector } from '../../storeHooks';
 import '../../styles/Menu.scss';
 import { showErrorToast } from '../../utils/util';
+import AddProjectModal from '../modals/AddProjectModal';
 
 function LeftMenu() {
-  const [ isProjListLoading, setIsProjListLoading ] = useState(true);
+  const [isProjListLoading, setIsProjListLoading] = useState(true);
+  const [isAddProjectModalOpen, setIsAddProjectModalOpen] = useState(false);
   const dispatch = useAppDispatch();
-  useEffect(() => {
+
+  const loadProjectList = () => {
     dispatch(fetchProjectList()).unwrap()
-    .then(() => setIsProjListLoading(false))
-    .catch(_ => {
-      showErrorToast(`Failed to load project list. Click to retry.`);
-    });
+      .then(() => setIsProjListLoading(false))
+      .catch(_ => {
+        showErrorToast(`Failed to load project list. Click to retry.`);
+      });
+  };
+
+  useEffect(() => {
+    loadProjectList();
   }, []);
+
   const projectList = useAppSelector(state => state.project.projectList);
+
+  const handleAddProjectModalHide = (projectCreated: boolean) => {
+    if (projectCreated) {
+      loadProjectList();
+    }
+    setIsAddProjectModalOpen(false);
+  }
 
   return (
     <div className="left-menu">
@@ -44,6 +59,14 @@ function LeftMenu() {
             </Link>
           ))
       }
+      <button className="add-project-btn" onClick={() => setIsAddProjectModalOpen(true)}>
+        <div className="icon-wrapper">
+          <span className="icon icon-plus" />
+        </div>
+      </button>
+      <AddProjectModal
+        show={isAddProjectModalOpen}
+        onHide={handleAddProjectModalHide}/>
     </div>
   );
 }

@@ -2,10 +2,12 @@ import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import { Navigate, Route, Routes, useParams } from "react-router-dom";
 import { fetchProject } from "../../features/projectSlice";
+import { createNewTask } from "../../features/sideViewSlice";
 import { useAppDispatch, useAppSelector } from "../../storeHooks";
 import { showErrorToast } from "../../utils/util";
 import TaskBoard from "../tasks/TaskBoard";
 import TaskList from "../tasks/TaskList";
+import MemberView from "./MemberView";
 import ProjectMenuLink from "./ProjectMenuLink";
 
 function Project({ className='', ...props }: React.AllHTMLAttributes<HTMLDivElement>) {
@@ -45,10 +47,13 @@ function Project({ className='', ...props }: React.AllHTMLAttributes<HTMLDivElem
           ) : (
             <div className="dash">
               <div className="top">
-                <div className="title">
-                  {project.name}
+                <div className="left">
+                  <div className="title">
+                    {project.name}
+                  </div>
+                  <MemberView members={project.members}/>
                 </div>
-                <button className="btn btn-primary new-task-btn">
+                <button className="btn btn-primary new-task-btn" onClick={() => dispatch(createNewTask(project))}>
                   <span className="icon icon-plus" />
                   Create Task
                 </button>

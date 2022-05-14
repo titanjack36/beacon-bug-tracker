@@ -96,6 +96,47 @@ code {
   }
 }
 
+.member-view {
+  display: flex;
+
+  .member-list {
+    display: flex;
+
+    .profile-view {
+      margin-right: 5px;
+    }
+  }
+
+  .view-members-btn {
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: none;
+    background: none;
+    
+    font-size: 4px;
+
+    opacity: 0;
+
+    @include theme() {
+      color: getColor(textLevel5);
+
+      &:hover {
+        background: getColor(secondary);
+      }
+    }
+  }
+  
+  &:hover .view-members-btn {
+    opacity: 1;
+  }
+}
+
 .tag {
   border-radius: 4px;
   padding: 0 5px 2px 5px;

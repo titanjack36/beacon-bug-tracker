@@ -1,0 +1,15 @@
+@import '../colors';
+
+.text-field-input {
+  border-radius: 6px;
+  outline: none;
+
+  @include theme() {
+    border: 1px solid getColor(textboxBorder);
+    background: getColor(textboxBg);
+  }
+}
+
+.text-field-view {
+  padding-left: 3px;
+}

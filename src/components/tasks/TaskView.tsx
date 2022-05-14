@@ -9,9 +9,10 @@ import ProfileView from "../common/ProfileView";
 import Select, { SelectOption } from "../editable/Select";
 import { DeepPartial } from "../../models/extended.type";
 import { showErrorToast } from "../../utils/util";
-import { updateTask } from "../../utils/api";
+import { postUpdateTask } from "../../utils/api";
 import PrioritySelect from "../editable/PrioritySelect";
 import TagSelect from "../editable/TagSelect";
+import TextField from "../editable/TextField";
 
 
 type TaskViewProps = {
@@ -21,14 +22,14 @@ type TaskViewProps = {
   onTaskUpdated(task: Task): void;
 };
 
-const stateSelectOptions: SelectOption[] = [
+export const stateSelectOptions: SelectOption[] = [
   { key: 'Todo' },
   { key: 'In Progress' },
   { key: 'Testing' },
   { key: 'Approved'}
 ];
 
-const typeSelectOptions: SelectOption[] = [
+export const typeSelectOptions: SelectOption[] = [
   { key: 'Bug' },
   { key: 'Task' }
 ];
@@ -37,12 +38,12 @@ const typeSelectOptions: SelectOption[] = [
 function TaskView({ task, state, onStateUpdated, onTaskUpdated }: TaskViewProps) {
   const { description, newComment, isModified } = state;
 
-  // console.log('taskview', state);
+  console.log('taskview', task);
 
   const handleTaskChange = async (updatedTask: Task): Promise<boolean> => {
     onTaskUpdated(updatedTask);
     try {
-      await updateTask(updatedTask);
+      await postUpdateTask(updatedTask);
       return true;
     } catch (err) {
       showErrorToast(
@@ -84,13 +85,13 @@ function TaskView({ task, state, onStateUpdated, onTaskUpdated }: TaskViewProps)
       description: { value: task.description, isEditing: false },
       isModified: false
     });
-  }
+  };
 
   return (
     <div className="task-view">
       <div className="header">
         <div className="title-section">
-        <div className="title">{task.title}</div>
+          <TextField className="title" value={task.title} onChange={title => handleTaskChange({ ...task, title })}/>
           <div className="breadcrumbs">
             <span className="crumb">{task.project.name}</span>
             <span className="icon icon-chevron-right"></span>

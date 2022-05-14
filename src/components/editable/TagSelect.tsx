@@ -1,7 +1,7 @@
 import Fuse from 'fuse.js';
 import React, { useEffect, useState } from "react";
 import { Tag } from "../../models/task.type";
-import { fetchTags } from '../../utils/api';
+import { getTags } from '../../utils/api';
 import { showErrorToast } from '../../utils/util';
 import TagView from "../tasks/TagView";
 import Select from "./Select";
@@ -19,9 +19,10 @@ type TagSelectProps = {
   projectId: string;
   selectedTags: Tag[];
   onSelectedTagsChange(tags: Tag[]): void;
+  alwaysEditing?: boolean;
 } & React.AllHTMLAttributes<HTMLDivElement>;
 
-export default function TagSelect({ projectId, selectedTags, onSelectedTagsChange, className, ...props }: TagSelectProps) {
+export default function TagSelect({ projectId, selectedTags, onSelectedTagsChange, alwaysEditing, className, ...props }: TagSelectProps) {
   const [fuse, setFuse] = useState<Fuse<Tag> | undefined>(undefined);
   const [unselectedTags, setUnselectedTags] = useState<Tag[] | undefined>(undefined);
   const [fuseResults, setFuseResults] = 
@@ -38,7 +39,7 @@ export default function TagSelect({ projectId, selectedTags, onSelectedTagsChang
 
   const handleSelectOpen = async () => {
     try {
-      const allTags = await fetchTags(projectId);
+      const allTags = await getTags(projectId);
       console.log(allTags);
       const remainingTags = allTags.filter(t1 => !selectedTags.find(t2 => t1.value === t2.value));
       setUnselectedTags(remainingTags);
@@ -98,6 +99,7 @@ export default function TagSelect({ projectId, selectedTags, onSelectedTagsChang
         onSelectOption={({ value }) => handleSelectTag(value)}
         onSelectClick={() => handleSelectOpen()}
         dropdownHeader={tagSearchInput}
+        alwaysEditing={alwaysEditing}
         {...props}>
       {
         selectedTags.map(tag => <TagView key={tag.value} tag={tag} className="field" onDelete={(event) => handleDeleteTag(event, tag)}/>)

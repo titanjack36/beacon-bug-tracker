@@ -1,9 +1,8 @@
-import { Link } from "react-router-dom";
-import { Profile } from "../../models/task.type";
+import { Profile } from "../../models/user.type";
 import '../../styles/Profile.scss';
 
 type ProfileViewProps = {
-  profile?: Profile;
+  profile?: Profile | null;
   showName?: boolean;
 } & React.AllHTMLAttributes<HTMLDivElement>;
 

@@ -52,6 +52,35 @@
       color: getColor(textOnMainMenuMuted);
     }
   }
+
+  .add-project-btn {
+    background: none;
+    border: none;
+
+    font-size: 10px;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    padding: 10px 0;
+
+    .icon-wrapper {
+      border-radius: 50%;
+      padding: 4px;
+
+      @include theme() {
+        color: getColor(textOnMainMenu);
+        border: 1px solid getColor(textOnMainMenu);
+      }
+    }
+
+    &:hover {
+      @include theme() {
+        background: getColor(mainMenuSelectBg);
+      }
+    }
+  }
 }
 
 .top-menu {

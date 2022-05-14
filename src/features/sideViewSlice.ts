@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { FetchTaskResponse } from '../models/api.type';
-import { OpenTaskState } from '../models/task.type';
+import { OpenTaskState, Project } from '../models/task.type';
 import { createGetRequest } from '../utils/api';
 
 type SideViewState = {
@@ -55,24 +55,34 @@ export const sideViewSlice = createSlice({
     },
     updateTaskState: (state, action: PayloadAction<OpenTaskState>) => {
       const newTaskState = action.payload;
+      const newTaskId = newTaskState.loadedTask ? newTaskState.loadedTask.id : newTaskState.taskId;
       const idx = state.openTaskStates.findIndex(s => s.taskId === newTaskState.taskId);
       if (idx >= 0) {
         state.openTaskStates[idx] = newTaskState;
         if (newTaskState.taskId === state.selectedTaskState?.taskId) {
-          state.selectedTaskState = newTaskState;
+          state.selectedTaskState = state.openTaskStates[idx];
+          state.selectedTaskState.taskId = newTaskId;
         }
+        state.openTaskStates[idx].taskId = newTaskId;
       }
     },
     selectProject: (state) => {
       state.isProjectSelected = true;
       state.selectedTaskState = undefined;
+    },
+    createNewTask: (state, action: PayloadAction<Project>) => {
+      const newTask = {
+        taskId: '_DRAFT-1',
+        project: action.payload,
+        taskTitle: '',
+        state: 'draft'
+      } as OpenTaskState;
+      state.openTaskStates.push(newTask);
+      state.selectedTaskState = newTask;
     }
   },
   extraReducers: builder => {
     builder
-      // .addCase(fetchTaskList.fulfilled, (state, {payload}) => {
-      //   state.taskList = payload;
-      // })
       .addCase(fetchTasks.fulfilled, (state, {payload}) => {
         const {fetchedTasks, invalidTaskIds, errorTaskIds } = payload;
         const fetchedTaskMap = new Map(fetchedTasks.map(t => [t.id, t]));
@@ -82,7 +92,9 @@ export const sideViewSlice = createSlice({
         state.openTaskStates.forEach(taskState => {
           if (fetchedTaskMap.has(taskState.taskId)) {
             const loadedTask = fetchedTaskMap.get(taskState.taskId);
+            taskState.project = loadedTask!.project;
             taskState.state = 'loaded';
+            taskState.taskTitle = loadedTask!.title;
             taskState.loadedTask = loadedTask;
             taskState.editState = {
               description: { value: loadedTask!.description, isEditing: false },
@@ -102,6 +114,6 @@ export const sideViewSlice = createSlice({
   }
 });
 
-export const { openTasks, selectTask, updateTaskState, selectProject } = sideViewSlice.actions;
+export const { openTasks, selectTask, updateTaskState, selectProject, createNewTask } = sideViewSlice.actions;
 
 export default sideViewSlice.reducer;
